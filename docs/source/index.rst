@@ -1,8 +1,8 @@
 ==================================================
-Welcome to Cosmic Python training's documentation!
+Welcome to Cosmic Python notes!
 ==================================================
 This documentation has been created to store progress, thoughts and notes
-taken during going over the cosmic python book *Architecture Patterns with Python* book by Harry J.W Percival & Bob Gregory.
+taken during going over the `Architecture Patterns with Python <http://www.cosmicpython.com>`_ book by Harry J.W Percival & Bob Gregory.
 
 .. toctree::
    :maxdepth: 2

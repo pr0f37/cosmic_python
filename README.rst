@@ -1,7 +1,13 @@
-=============
-Cosmic Python
-=============
-This is a training repository to practice techniques presented in the `Architecture Patterns with Python` book by Harry J.W Percival & Bob Gregory.
+===================
+Cosmic Python notes
+===================
+
+.. image:: https://readthedocs.org/projects/cosmic-python-thoughts/badge/?version=latest
+    :alt: Documentation Status
+    :target: https://cosmic-python-thoughts.readthedocs.io/en/latest/?badge=latest
+
+This is a training repository to practice techniques presented in the
+`Architecture Patterns with Python <http://www.cosmicpython.com>`_ book by Harry J.W Percival & Bob Gregory.
 
 Documentation
 =============
