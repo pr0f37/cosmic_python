@@ -6,7 +6,6 @@ This is a training repository to practice techniques presented in the
 [Architecture Patterns with Python](http://www.cosmicpython.com) book by Harry J.W Percival & Bob Gregory.
 
 ## Documentation
-
 Check more detailed documentation at [read the docs!](https://cosmic-python-thoughts.readthedocs.io)
 
 ## Installation
@@ -24,7 +23,6 @@ If you want to contribute please submit your changes via pull request!
 To start working you need to set up your working environment. I strongly encourage you to use the following tools:
 
 ### Pyenv/Virtualenv
-
 Pyenv is a tool which helps with installation and control of different versions of python on your machine.
 Virtualenv is a matured and easy to use pyenv plugin which can group your python packages into virtual environments.
 Virtualenv lets you isolate the project specific configuration from the system specific configuration which helps to
@@ -43,7 +41,6 @@ pip install -r requirements.txt
 ```
 
 ### Pre-commit
-
 Pre-commit checks & formats the code automatically against a list of configured and preinstalled hooks.
 The list of default hooks for this repository is available in the `.pre-commit-config.yaml` file.
 
