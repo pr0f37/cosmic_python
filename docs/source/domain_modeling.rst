@@ -1,7 +1,7 @@
 ###############
 Domain Modeling
 ###############
-Correct Domain Driven Desing should result in domain object representation reflected in minimal yet complete set of class definitions.
+Correct Domain Driven Design should result in domain object representation reflected in minimal yet complete set of class definitions.
 Classes should be reflecting the behavior and possible states of the objects of business model.
 Their characteristics should directly explain their behavior.
 
@@ -13,14 +13,14 @@ They should be used to represent static objects with no behavior.
 * ``@dataclass(frozen=True)`` makes the class fields immutable
 
 
-Domain Model
-------------
-This is the domain model right now
+Initial Domain Model
+--------------------
+The first idea of the model is as follows:
 
 .. mermaid::
 
     classDiagram
-        Batch --> OrderLine
+        Batch o-- OrderLine
         class OrderLine{
             orderid: str
             sku: str
@@ -31,6 +31,41 @@ This is the domain model right now
             sku: str
             eta: date
             available_quantity: int
+            allocations: set
             can_allocate(order_line: OrderLine)
             allocate(order_line: OrderLine)
+            deallocate(order_line: OrderLine)
+        }
+
+OrderLine data class which is static (immutable) and serves only and the data aggregate.
+Batch class is a standard mutable object which references multiple OrderLine objects to reflect allocation state.
+Flaw of the current implementation is that class fields change every time allocation is successful - quantity values are being decremented and saved.
+This adds unneeded update operations and changes the class state making its state history untraceable and calculation correctness unverifiable.
+
+Domain Model Evolution
+----------------------
+In order to keep allocation history and simplify code the previously constantly updated *current* ``available_quantity`` field
+has been changed to private static ``_allocated_quantity`` field which is set  only once - during class initialization.
+The available quantity is now a dynamically calculated ``@property`` field. To simplify the code responsible for dynamic allocated ``OrderLine``
+quantity calculation in ``Batch`` class the ``__radd()__`` operator method has been overloaded for ``OrderLine`` allowing us to simply
+call ``sum()`` method on the ``_allocations`` set.
+
+.. mermaid::
+    classDiagram
+        Batch o-- OrderLine
+        class OrderLine{
+            orderid: str
+            sku: str
+            qty: int
+        }
+        class Batch{
+            reference: str
+            sku: str
+            eta: date
+            _allocated_quantity: int
+            _allocations: set()
+            available_quantity: int
+            can_allocate(order_line: OrderLine)
+            allocate(order_line: OrderLine)
+            deallocate(order_line: OrderLine)
         }
