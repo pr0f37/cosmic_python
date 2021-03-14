@@ -51,6 +51,7 @@ quantity calculation in ``Batch`` class the ``__radd()__`` operator method has b
 call ``sum()`` method on the ``_allocations`` set.
 
 .. mermaid::
+
     classDiagram
         Batch o-- OrderLine
         class OrderLine{
