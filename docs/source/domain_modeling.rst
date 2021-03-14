@@ -9,7 +9,7 @@ Data Classes
 ------------
 They should be used to represent static objects with no behavior.
 
-* ``@dataclass`` decorator in python introduces several optimizations for class objects. For example it automatically adds ``__init__()`` method initializing all the class fields.
+* ``@dataclass`` decorator in python introduces several optimizations for class objects. For example it automatically adds ``__init__()`` method initializing all the class fields
 * ``@dataclass(frozen=True)`` makes the class fields immutable
 
 
@@ -31,7 +31,7 @@ The first idea of the model is as follows:
             sku: str
             eta: date
             available_quantity: int
-            allocations: set
+            allocations: set[OrderLine]
             can_allocate(order_line: OrderLine)
             allocate(order_line: OrderLine)
             deallocate(order_line: OrderLine)
@@ -44,11 +44,12 @@ This adds unneeded update operations and changes the class state making its stat
 
 Domain Model Evolution
 ----------------------
-In order to keep allocation history and simplify code the previously constantly updated *current* ``available_quantity`` field
+In order to keep allocation history and simplify the code following changes has been introduced.
+Previously constantly updated *current* ``available_quantity`` field
 has been changed to private static ``_allocated_quantity`` field which is set  only once - during class initialization.
-The available quantity is now a dynamically calculated ``@property`` field. To simplify the code responsible for dynamic allocated ``OrderLine``
-quantity calculation in ``Batch`` class the ``__radd()__`` operator method has been overloaded for ``OrderLine`` allowing us to simply
-call ``sum()`` method on the ``_allocations`` set.
+The available quantity is now a dynamically calculated ``@property`` field. The ``OrderLine`` ``__radd__()`` operator method has been overloaded allowing us to simply
+call ``sum()`` method on the ``_allocations`` set to simplify the code responsible for dynamic
+quantity calculation in ``Batch`` class.
 
 .. mermaid::
 
@@ -64,7 +65,7 @@ call ``sum()`` method on the ``_allocations`` set.
             sku: str
             eta: date
             _allocated_quantity: int
-            _allocations: set()
+            _allocations: set[OrderLine]
             available_quantity: int
             can_allocate(order_line: OrderLine)
             allocate(order_line: OrderLine)
