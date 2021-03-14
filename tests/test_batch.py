@@ -1,5 +1,6 @@
 from src.model.batch import Batch
 from src.model.order_line import OrderLine
+from src.main import allocate
 from datetime import date
 
 
@@ -57,3 +58,10 @@ def test_can_only_deallocate_allocated_lines():
     batch, unallocated_line = make_batch_and_line("DECORATIVE-TRINKET", 20, 2)
     batch.deallocate(unallocated_line)
     assert batch.available_quantity == 20
+
+
+def test_allocate_orderline_to_batches_set():
+    batch, line = make_batch_and_line("DECORATIVE-TRINKET", 20, 22)
+    allocateable_batch = Batch("ref00001", "DECORATIVE-TRINKET", 30, date.today())
+    allocated_batch = allocate(line, [batch, allocateable_batch])
+    assert allocated_batch == allocateable_batch

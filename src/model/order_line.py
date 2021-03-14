@@ -11,7 +11,7 @@ class OrderLine:
         if self.sku == other.sku and self.orderid == other.orderid:
             qty = self.qty + other.qty
             return OrderLine(self.orderid, self.sku, qty)
-        return None
+        raise ValueError(f"Cannot add two OrderLines with different sku or orderid")
 
     def __radd__(self, other):
         return self.qty + other
