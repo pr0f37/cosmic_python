@@ -22,19 +22,19 @@ The first idea of the model is as follows:
     classDiagram
         Batch o-- OrderLine
         class OrderLine{
-            orderid: str
-            sku: str
-            qty: int
+            orderid : str
+            sku : str
+            qty : int
         }
         class Batch{
-            reference: str
-            sku: str
-            eta: date
-            available_quantity: int
-            allocations: set[OrderLine]
-            can_allocate(order_line: OrderLine)
-            allocate(order_line: OrderLine)
-            deallocate(order_line: OrderLine)
+            reference : str
+            sku : str
+            eta : date
+            available_quantity : int
+            allocations : Set~OrderLine~
+            can_allocate(order_line : OrderLine) Bool
+            allocate(order_line : OrderLine)
+            deallocate(order_line : OrderLine)
         }
 
 OrderLine data class which is static (immutable) and serves only and the data aggregate.

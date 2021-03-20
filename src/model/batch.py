@@ -8,12 +8,18 @@ class Batch:
         self.reference = ref
         self.sku = sku
         self.eta = eta
-        self._allocated_quantity = qty
+        self._purchased_quantity = qty
         self._allocations: Set[OrderLine] = set()
+
+    def __eq__(self, o: object) -> bool:
+        try:
+            return self.reference == o.reference
+        except AttributeError:
+            return False
 
     @property
     def available_quantity(self):
-        return self._allocated_quantity - sum(self._allocations)
+        return self._purchased_quantity - sum(self._allocations)
 
     def allocate(self, order_line: OrderLine):
         if self.can_allocate(order_line):

@@ -22,6 +22,7 @@ copyright = "2021, Pr0f37"
 author = "Pr0f37"
 
 # The full version, including alpha/beta/rc tags
+version = "0.0.1"
 release = "0.0.1"
 
 

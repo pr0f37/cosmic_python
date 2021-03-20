@@ -9,6 +9,7 @@ taken during going over the `Architecture Patterns with Python <http://www.cosmi
    :caption: Chapters
 
    domain_modeling
+   repository_pattern
 
 Indices and tables
 ==================
