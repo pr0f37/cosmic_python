@@ -10,3 +10,7 @@ class AbstractRepository(ABC):
     @abstractmethod
     def get(self, reference) -> Batch:
         raise NotImplementedError
+
+    @abstractmethod
+    def list(self) -> Batch:
+        raise NotImplementedError

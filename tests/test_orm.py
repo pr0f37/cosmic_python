@@ -1,25 +1,8 @@
 from datetime import date
 from src.model.order_line import OrderLine
 from src.model.batch import Batch
-from pytest import fixture
-from sqlalchemy.orm import sessionmaker, clear_mappers
-from sqlalchemy import create_engine
-from src.orm import metadata, start_mappers
+
 from src.repository.sqlalchemy_repository import SqlAlchemyRepository
-
-
-@fixture
-def in_memory_db():
-    engine = create_engine("sqlite:///:memory:")
-    metadata.create_all(engine)
-    return engine
-
-
-@fixture
-def session(in_memory_db):
-    start_mappers()
-    yield sessionmaker(bind=in_memory_db)()
-    clear_mappers()
 
 
 def test_orderline_mapper_can_load_lines(session):
