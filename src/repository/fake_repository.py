@@ -13,3 +13,10 @@ class FakeRepository(AbstractRepository):
 
     def list(self):
         return list(self._batches)
+
+
+class FakeSession:
+    committed = False
+
+    def commit(self):
+        self.committed = True

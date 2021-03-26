@@ -8,8 +8,9 @@ taken during going over the `Architecture Patterns with Python <http://www.cosmi
    :maxdepth: 2
    :caption: Chapters
 
-   domain_modeling
-   repository_pattern
+   chapters/domain_modeling
+   chapters/repository_pattern
+   chapters/service_layer
 
 Indices and tables
 ==================

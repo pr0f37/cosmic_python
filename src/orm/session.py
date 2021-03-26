@@ -4,11 +4,11 @@ from src.orm import metadata, start_mappers
 
 
 class Session:
-    def __init__(self):
-        engine = create_engine("sqlite:///:memory:")
+    def __init__(self, db_string="sqlite:///:memory:"):
+        engine = create_engine(db_string)
         metadata.create_all(engine)
         start_mappers()
-        self.session = scoped_session(sessionmaker(bind=engine))
+        self.session = sessionmaker(bind=engine)
 
     def __enter__(self):
         return self.session()

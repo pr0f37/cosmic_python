@@ -11,10 +11,22 @@ class Batch:
         self._purchased_quantity = qty
         self._allocations: Set[OrderLine] = set()
 
+    def __hash__(self):
+        return hash(self.reference)
+
     def __eq__(self, o: object) -> bool:
         try:
             return self.reference == o.reference
         except AttributeError:
+            return False
+
+    def __repr__(self) -> str:
+        return f"{self.reference}"
+
+    def __lt__(self, o: object) -> bool:
+        try:
+            return self.eta < o.eta
+        except (AttributeError, TypeError):
             return False
 
     @property

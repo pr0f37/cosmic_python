@@ -62,7 +62,7 @@ The only thing that we have to test is how our models interact with them - witho
 this level of separation tester would have to use Mocking to for example fake db operations.
 
 Having repository pattern implemented we just have to create FakeRepository class
-which will just accumulate references to our domain objects:
+which will accumulate references to our domain objects:
 
 .. code-block:: python
 
