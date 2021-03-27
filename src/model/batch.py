@@ -25,13 +25,17 @@ class Batch:
 
     def __lt__(self, o: object) -> bool:
         try:
-            return self.eta < o.eta
+            return self._eta < o._eta
         except (AttributeError, TypeError):
             return False
 
     @property
     def available_quantity(self):
         return self._purchased_quantity - sum(self._allocations)
+
+    @property
+    def _eta(self):
+        return self.eta if self.eta else date.today()
 
     def allocate(self, order_line: OrderLine):
         if self.can_allocate(order_line):
