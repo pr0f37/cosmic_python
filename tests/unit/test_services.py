@@ -2,6 +2,39 @@ from datetime import date, timedelta
 from pytest import fixture, raises
 from src.service_layer.services import allocate, add_batch, InvalidSku
 from src.repository.fake_repository import FakeRepository, FakeSession
+from src.uow.abstract_uow import AbstractUnitOfWork
+
+
+class FakeUnitOfWork(AbstractUnitOfWork):
+    def __init__(self) -> None:
+        self.batches = FakeRepository([])
+        self.commited = False
+
+    def __enter__(self, *args):
+        pass
+
+    def __exit__(self, *args):
+        return super().__exit__(*args)
+
+    def commit(self):
+        self.commited = True
+
+    def rollback(self):
+        pass
+
+
+def test_add_batch():
+    uow = FakeUnitOfWork()
+    add_batch("b1", "CRUNCHY-ARMCHAIR", 100, None, uow)
+    assert uow.batches.get("b1") is not None
+    assert uow.commited
+
+
+def test_allocate_return_allocation():
+    uow = FakeUnitOfWork()
+    add_batch("batch1", "COMPLICATED-LAMP", 100, None, uow)
+    result = allocate("o1", "COMPLICATED-LAMP", 10, uow)
+    assert result == "batch1"
 
 
 @fixture
