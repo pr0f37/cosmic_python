@@ -11,6 +11,7 @@ taken during going over the `Architecture Patterns with Python <http://www.cosmi
    chapters/domain_modeling
    chapters/repository_pattern
    chapters/service_layer
+   chapters/unit_of_work
 
 Indices and tables
 ==================
