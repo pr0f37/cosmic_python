@@ -1,6 +1,7 @@
+from src.orm import start_mappers
 from src.repository.sqlalchemy_repository import SqlAlchemyRepository
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import clear_mappers, sessionmaker
 from src.config import get_postgres_uri
 from src.uow.abstract_uow import AbstractUnitOfWork
 
@@ -12,6 +13,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
         self.session_factory = session_factory
 
     def __enter__(self):
+        start_mappers()
         self.session = self.session_factory()
         self.batches = SqlAlchemyRepository(self.session)
         return self.session
@@ -19,6 +21,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
     def __exit__(self, *args):
         super().__exit__(*args)
         self.session.close()
+        clear_mappers()
 
     def commit(self):
         self.session.commit()
