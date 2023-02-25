@@ -3,7 +3,7 @@ from src.repository.abstract_repository import AbstractRepository
 
 
 class AbstractUnitOfWork(ABC):
-    batches: AbstractRepository
+    products: AbstractRepository
 
     @abstractmethod
     def __exit__(self, *args):

@@ -1,9 +1,11 @@
+from src.model.order_line import OrderLine
 from src.config import get_postgres_uri
 from pytest import fixture, raises
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from src.uow.sqlalchemy_uow import SqlAlchemyUnitOfWork
 from src.service_layer.services import add_batch
+from time import time
 
 
 @fixture
@@ -34,3 +36,15 @@ def test_rolls_back_on_error(session_factory):
     new_session = session_factory()
     rows = list(new_session.execute('SELECT * FROM "batches"'))
     assert rows == []
+
+
+def try_to_allocate(orderid, sku, exceptions):
+    line = OrderLine(orderid, sku, 10)
+    try:
+        with SqlAlchemyUnitOfWork() as uow:
+            product = uow.product.get(sku=sku)
+            product.allocate(line)
+            time.sleep(0.2)
+            uow.commit()
+    except Exception as e:
+        print(e)
