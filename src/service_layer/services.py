@@ -1,3 +1,4 @@
+from src.allocation.domain.model import Product
 from src.uow.abstract_uow import AbstractUnitOfWork
 from typing import Optional
 from src.model.batch import Batch
@@ -17,28 +18,30 @@ def is_valid_sku(sku, batches):
 
 def allocate(orderid: str, sku: str, qty: int, uow: AbstractUnitOfWork) -> str:
     line = OrderLine(orderid, sku, qty)
-    batches = uow.batches.list()
-    if not is_valid_sku(sku, batches):
+    product = uow.products.get(sku=line.sku)
+    if not product:
         raise InvalidSku(f"Invalid sku {sku}")
-    try:
-        batch = next(batch for batch in sorted(batches) if batch.can_allocate(line))
-    except StopIteration:
-        raise OutOfStock(f"No batches available for sku {line.sku}")
-    batch.allocate(line)
+    batch = product.allocate(line)
     return str(batch)
 
 
 def add_batch(
     ref: str, sku: str, qty: int, eta: Optional[date], uow: AbstractUnitOfWork
 ):
-    uow.batches.add(Batch(ref, sku, qty, eta))
+    # uow.batches.add(Batch(ref, sku, qty, eta))
+    product = uow.products.get(sku=sku)
+    if not product:
+        product = Product(sku=sku, batches=[])
+        uow.products.add(product=product)
+    product.batches.append(Batch(ref=ref, sku=sku, qty=qty, eta=eta))
+    uow.commit()
 
 
 def reallocate(orderid: str, sku: str, qty: int, uow: AbstractUnitOfWork) -> str:
     line = OrderLine(orderid, sku, qty)
-    batch = uow.batches.get(sku=line.sku)
-    if batch is None:
+    product = uow.products.get(sku=line.sku)
+    if product is None:
         raise InvalidSku(f"Invalid sku {sku}")
-    batch.deallocate(line)
-    batchref = allocate(orderid, sku, qty, uow)
-    return batchref
+    product.deallocate(line)
+    batch = product.allocate(line)
+    return str(batch)
